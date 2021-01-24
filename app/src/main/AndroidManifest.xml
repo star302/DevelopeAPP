@@ -29,13 +29,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".RecognizeActivity" />
+        <activity android:name=".ui.RecognizeActivity" />
 <!--        <activity android:name=".HomeActivity" />-->
 
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/file_path" /> <!-- <activity android:name=".IndexActivity" /> -->
-        <activity android:name=".HomeActivity">
+        <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

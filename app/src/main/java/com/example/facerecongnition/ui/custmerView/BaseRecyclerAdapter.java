@@ -1,4 +1,4 @@
-package com.example.facerecongnition.fragment.base;
+package com.example.facerecongnition.ui.custmerView;
 
 import android.content.Context;
 import android.view.LayoutInflater;

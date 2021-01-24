@@ -1,4 +1,4 @@
-package com.example.facerecongnition;
+package com.example.facerecongnition.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -12,20 +12,21 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-
 import com.alibaba.fastjson.JSONObject;
+import com.example.facerecongnition.BuildConfig;
+import com.example.facerecongnition.R;
+import com.example.facerecongnition.constant.Constant;
+import com.example.facerecongnition.ui.custmerView.MyImageView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -33,7 +34,6 @@ import com.nanchen.compresshelper.CompressHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +52,18 @@ public class RecognizeActivity extends AppCompatActivity {
     @BindView(R.id.tv_name)
     TextView textRecognize;
 
-    @OnClick(R.id.btn_take_photo) void takephoto(){
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//remove title bar  即隐藏标题栏
+//        Objects.requireNonNull(getSupportActionBar()).hide();// 隐藏ActionBar
+        setContentView(R.layout.activity_test);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.btn_take_photo)
+    void takephoto() {
 //    创建file对象，用于存储拍照后的图片；
         textRecognize.setText("识别结果:");
         File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
@@ -75,7 +86,7 @@ public class RecognizeActivity extends AppCompatActivity {
         }
 
         //启动相机程序
-        if (ContextCompat.checkSelfPermission(RecognizeActivity.this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(RecognizeActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             //如果没有请求权限在这里请求
             ActivityCompat.requestPermissions(RecognizeActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
         }
@@ -84,7 +95,8 @@ public class RecognizeActivity extends AppCompatActivity {
         startActivityForResult(intent, TAKE_PHOTO);
     }
 
-    @OnClick(R.id.btn_choose_from_album) void choosealbum(){
+    @OnClick(R.id.btn_choose_from_album)
+    void choosealbum() {
         textRecognize.setText("识别结果:");
         if (ContextCompat.checkSelfPermission(RecognizeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(RecognizeActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -93,13 +105,14 @@ public class RecognizeActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.btn_recognize) void Recognize(){
+    @OnClick(R.id.btn_recognize)
+    void Recognize() {
         File file = new File(outputImagePath);
-        if (!file.exists()){
+        if (!file.exists()) {
             Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
             return;
         }
-        if (!file.canRead()){
+        if (!file.canRead()) {
             Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
             return;
         }
@@ -124,13 +137,14 @@ public class RecognizeActivity extends AppCompatActivity {
                         String body = jo_temp.getString("body");
                         JSONObject jo = JSONObject.parseObject(body);
                         String staffName = jo.getString("staffName");
-                        if (staffName == null){
+                        if (staffName == null) {
                             staffName = "无法识别";
                         }
                         textRecognize.setText("识别结果：" + staffName);
                         textRecognize.invalidate();
 //                        getRecognizeResult();
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         Toasty.error(getApplicationContext(), "上传出错", Toast.LENGTH_SHORT, true).show();
@@ -138,8 +152,8 @@ public class RecognizeActivity extends AppCompatActivity {
                 });
     }
 
-    public void getRecognizeResult(){
-        if (pictureName.isEmpty() || pictureType.isEmpty()){
+    public void getRecognizeResult() {
+        if (pictureName.isEmpty() || pictureType.isEmpty()) {
             Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
             return;
         }
@@ -165,20 +179,14 @@ public class RecognizeActivity extends AppCompatActivity {
 
                         Toasty.success(getApplicationContext(), "识别成功！", Toast.LENGTH_SHORT, true).show();
                     }
+
                     @Override
                     public void onError(Response<String> response) {
                         Toasty.error(getApplicationContext(), "识别出错", Toast.LENGTH_SHORT, true).show();
                     }
                 });
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);//remove title bar  即隐藏标题栏
-        Objects.requireNonNull(getSupportActionBar()).hide();// 隐藏ActionBar
-        setContentView(R.layout.activity_test);
-        ButterKnife.bind(this);
-    }
+
 
     //打开相册
     private void openAlbum() {
@@ -186,6 +194,7 @@ public class RecognizeActivity extends AppCompatActivity {
         intent.setType("image/*");
         startActivityForResult(intent, CHOOSE_PHOTO);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -222,8 +231,8 @@ public class RecognizeActivity extends AppCompatActivity {
                                 break;
                         }
                         picture.setImageBitmap(bm);
-                        picture.setPivotX(picture.getWidth()/2);
-                        picture.setPivotY(picture.getHeight()/2);
+                        picture.setPivotX(picture.getWidth() / 2);
+                        picture.setPivotY(picture.getHeight() / 2);
                         // 旋转
                         picture.setRotation(degree);
 //                        String path = imageUri.getEncodedPath();
@@ -253,6 +262,7 @@ public class RecognizeActivity extends AppCompatActivity {
                 break;
         }
     }
+
     // 4.4及以下的系统使用这个方法处理图片
     private void handleImageBeforeKitKat(Intent data) throws IOException {
         Uri uri = data.getData();
@@ -293,8 +303,8 @@ public class RecognizeActivity extends AppCompatActivity {
 
             System.out.println("高度：" + bitmap.getHeight());
             System.out.println("宽度：" + bitmap.getWidth());
-            picture.setPivotX(picture.getWidth()/2);
-            picture.setPivotY(picture.getHeight()/2);
+            picture.setPivotX(picture.getWidth() / 2);
+            picture.setPivotY(picture.getHeight() / 2);
             // 旋转90度
             picture.setRotation(degree);
             picture.setImageBitmap(bitmap);

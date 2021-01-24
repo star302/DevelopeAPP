@@ -14,6 +14,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         QMUISwipeBackActivityManager.init(this);
         // 初始化 OkGo
         initOkGo();

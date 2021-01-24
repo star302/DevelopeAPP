@@ -12,13 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:orientation="vertical"/>
-    <com.example.facerecongnition.MyImageView
+    <com.example.facerecongnition.ui.custmerView.MyImageView
         android:id="@+id/work_picture"
         android:layout_width="match_parent"
         android:background="@color/recognizePicture"
         android:layout_height="wrap_content"
         android:layout_weight="1">
-    </com.example.facerecongnition.MyImageView>
+    </com.example.facerecongnition.ui.custmerView.MyImageView>
     <LinearLayout
         android:id="@+id/work_button"
         android:layout_width="match_parent"

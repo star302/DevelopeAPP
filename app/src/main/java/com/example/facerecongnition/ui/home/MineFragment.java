@@ -1,4 +1,4 @@
-package com.example.facerecongnition.fragment.home;
+package com.example.facerecongnition.ui.home;
 
 import android.view.LayoutInflater;
 import android.view.View;

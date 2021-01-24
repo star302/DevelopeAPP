@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:gravity="center"
         android:layout_marginBottom="30dp"
+        android:gravity="center"
         android:paddingHorizontal="30dp">
+
         <Button
             android:id="@+id/btn_home_recognize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@mipmap/face"
-            android:textSize="55sp"
+            android:text="人脸考勤"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="人脸考勤">
-        </Button>
+            android:textSize="55sp"
+            android:textStyle="bold"></Button>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="200dp"
         android:gravity="center"
         android:paddingHorizontal="30dp">
+
         <Button
             android:id="@+id/btn_home_count"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@mipmap/steel"
-            android:textSize="55sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
             android:text="钢筋计数"
-            />
+            android:textColor="@color/white"
+            android:textSize="55sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>
