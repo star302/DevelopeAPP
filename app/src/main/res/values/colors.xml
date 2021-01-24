@@ -5,9 +5,10 @@
     <color name="colorAccent">#654D6D</color>
     <color name="line">#727272</color>
     <color name="grey">#8a8a8a</color>
+    <color name="tab_grey">#707070</color>
     <color name="recognizePicture">#52F4D6D6</color>
     <color name="textInputLayout">#96ffffff</color>
-
+    <color name="tab_blue">#00A8E1</color>
     <color name="half_black">#808080</color>
     <color name="white">#FAFAFA</color>
     <color name="yellow">#FFDF82</color>
