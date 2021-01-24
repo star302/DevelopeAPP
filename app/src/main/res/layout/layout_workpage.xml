@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
         android:id="@+id/work_topbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"/>
     <LinearLayout
         android:id="@+id/work_position"
@@ -29,4 +29,4 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"/>
 
-</LinearLayout>
+</com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

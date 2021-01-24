@@ -4,9 +4,11 @@
 <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
     <style name="AppTheme" parent="QMUI.Compat.NoActionBar">
         <!-- Customize your theme here. -->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--        <item name="colorAccent">@color/colorAccent</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="qmui_skin_support_topbar_bg">@color/tab_blue</item>
+        <item name="qmui_skin_support_topbar_image_tint_color">@color/yellow</item>
     </style>
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">

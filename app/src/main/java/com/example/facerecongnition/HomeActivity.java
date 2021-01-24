@@ -6,22 +6,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chaychan.library.BottomBarLayout;
 import com.example.facerecongnition.fragment.home.HomeFragment;
-import com.example.facerecongnition.fragment.home.MeFragment;
-import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.example.facerecongnition.fragment.home.MineFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -29,32 +26,22 @@ public class HomeActivity extends AppCompatActivity {
     ViewPager mViewPager;
     @BindView(R.id.bottom_bar)
     BottomBarLayout mBottomBarLayout;
-    @BindView(R.id.work_topbar)
-    QMUITopBarLayout mTopBar;
     List<Fragment> pageLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View root = LayoutInflater.from(this).inflate(R.layout.layout_workpage, null);
+        View root = LayoutInflater.from(this).inflate(R.layout.home, null);
         ButterKnife.bind(this, root);
         setContentView(root);
-        initTopBar();
-//        initData();
+        initData();
     }
-    private void initTopBar() {
-        mTopBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                popBackStack();
-            }
-        });
-    }
+
     private void initData() {
         pageLists=new ArrayList<>();//list里面fragment,
         pageLists.add(new HomeFragment());
-        pageLists.add(new MeFragment());
-
+        pageLists.add(new MineFragment());
+//
         mViewPager.setAdapter(new fragmentAdapter(getSupportFragmentManager()));
         mBottomBarLayout.setViewPager(mViewPager);//底部bottombar;
 
