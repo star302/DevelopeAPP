@@ -1,4 +1,4 @@
-package com.example.facerecongnition;
+package com.example.facerecongnition.ui.custmerView;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,16 +23,16 @@ public class MyImageView extends androidx.appcompat.widget.AppCompatImageView {
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case GET_DATA_SUCCESS:
                     Bitmap bitmap = (Bitmap) msg.obj;
                     setImageBitmap(bitmap);
                     break;
                 case NETWORK_ERROR:
-                    Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
                     break;
                 case SERVER_ERROR:
-                    Toast.makeText(getContext(),"服务器发生错误",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "服务器发生错误", Toast.LENGTH_SHORT).show();
                     break;
             }
             return false;
@@ -80,7 +79,7 @@ public class MyImageView extends androidx.appcompat.widget.AppCompatImageView {
                         msg.what = GET_DATA_SUCCESS;
                         handler.sendMessage(msg);
                         inputStream.close();
-                    }else {
+                    } else {
                         //服务启发生错误
                         handler.sendEmptyMessage(SERVER_ERROR);
                     }
