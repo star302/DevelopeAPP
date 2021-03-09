@@ -14,7 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -23,15 +27,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import com.alibaba.fastjson.JSONObject;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.facerecongnition.BuildConfig;
 import com.example.facerecongnition.R;
 import com.example.facerecongnition.constant.Constant;
 import com.example.facerecongnition.ui.custmerView.MyImageView;
+import com.example.facerecongnition.ui.home.HomeActivity;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.nanchen.compresshelper.CompressHelper;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -48,24 +58,37 @@ public class RecognizeActivity extends AppCompatActivity {
     String pictureName; // 服务器传回来的图片名
     String pictureType; // 服务器传回来的图片后缀
     @BindView(R.id.iv_picture)
-    MyImageView picture;
-    @BindView(R.id.tv_name)
-    TextView textRecognize;
-
+    ImageView picture;
+    @BindView(R.id.linear_btn_up)
+    LinearLayout mLinerUp;
+    @BindView(R.id.linear_btn_down)
+    LinearLayout mLinerDown;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout mTopBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//remove title bar  即隐藏标题栏
-//        Objects.requireNonNull(getSupportActionBar()).hide();// 隐藏ActionBar
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_recongnize);
         ButterKnife.bind(this);
+        initTopBar();
+    }
+
+    private void initTopBar(){
+        mTopBar.addLeftBackImageButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(RecognizeActivity.this, "返回测试", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mTopBar.setTitle("智慧工地之人脸考勤");
     }
 
     @OnClick(R.id.btn_take_photo)
     void takephoto() {
 //    创建file对象，用于存储拍照后的图片；
-        textRecognize.setText("识别结果:");
+//        textRecognize.setText("识别结果:");
         File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
         outputImagePath = outputImage.getAbsolutePath();
         try {
@@ -97,7 +120,7 @@ public class RecognizeActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_choose_from_album)
     void choosealbum() {
-        textRecognize.setText("识别结果:");
+//        textRecognize.setText("识别结果:");
         if (ContextCompat.checkSelfPermission(RecognizeActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(RecognizeActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         } else {
@@ -116,7 +139,7 @@ public class RecognizeActivity extends AppCompatActivity {
             Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
             return;
         }
-        Toasty.success(getApplicationContext(), "识别中，请勿重复点击... ...", Toast.LENGTH_SHORT, true).show();
+//        Toasty.success(getApplicationContext(), "识别中，请勿重复点击... ...", Toast.LENGTH_SHORT, true).show();
 
         // 图像压缩
         File newFile = new CompressHelper.Builder(this)
@@ -125,68 +148,80 @@ public class RecognizeActivity extends AppCompatActivity {
                 .compressToFile(file);
 
         // 上传图片到服务器
-        OkGo.<String>post(Constant.URL + "/picture/uploadRecognitionPicture")
-                .tag(this)
-                .params("file", newFile)
-                .isMultipart(true)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        String res = response.body();
-                        JSONObject jo_temp = JSONObject.parseObject(res);
-                        String body = jo_temp.getString("body");
-                        JSONObject jo = JSONObject.parseObject(body);
-                        String staffName = jo.getString("staffName");
-                        if (staffName == null) {
-                            staffName = "无法识别";
-                        }
-                        textRecognize.setText("识别结果：" + staffName);
-                        textRecognize.invalidate();
-//                        getRecognizeResult();
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        Toasty.error(getApplicationContext(), "上传出错", Toast.LENGTH_SHORT, true).show();
-                    }
-                });
-    }
-
-    public void getRecognizeResult() {
-        if (pictureName.isEmpty() || pictureType.isEmpty()) {
-            Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
-            return;
-        }
-        OkGo.<String>post(Constant.URL + "/picture/uploadRecognitionPicture")
-                .tag(this)
-                .params("pictureName ", pictureName)
-                .params("pictureType", pictureType)
-                .isMultipart(true)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
+//        OkGo.<String>post(Constant.URL + "/picture/uploadRecognitionPicture")
+//                .tag(this)
+//                .params("file", newFile)
+//                .isMultipart(true)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
 //                        String res = response.body();
 //                        JSONObject jo_temp = JSONObject.parseObject(res);
 //                        String body = jo_temp.getString("body");
 //                        JSONObject jo = JSONObject.parseObject(body);
-//                        picture.setImageURL("http://121.48.163.57:18080/FaceRecognition/picture/PreviewPictureRecordFile?pictureName=33ede0227d21432cb8f61ee4949d2f2012701&pictureType=png");
-                        String url = String.format("http://121.48.163.57:18080/FaceRecognition/picture/PreviewPictureRecordFile?pictureName=%s&pictureType=%s", pictureName, pictureType);
-                        picture.setImageURL(url);
-                        picture.invalidate();
-                        textRecognize.setText("识别结果：张三");
-                        pictureName = "";
-                        pictureType = "";
-
-                        Toasty.success(getApplicationContext(), "识别成功！", Toast.LENGTH_SHORT, true).show();
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        Toasty.error(getApplicationContext(), "识别出错", Toast.LENGTH_SHORT, true).show();
-                    }
-                });
+//                        String staffName = jo.getString("staffName");
+//                        if (staffName == null) {
+//                            staffName = "无法识别";
+//                        }
+////                        textRecognize.setText("识别结果：" + staffName);
+////                        textRecognize.invalidate();
+////                        getRecognizeResult();
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        Toasty.error(getApplicationContext(), "上传出错", Toast.LENGTH_SHORT, true).show();
+//                    }
+//                });
+        Intent intent=new Intent(RecognizeActivity.this,FaceResultActivity.class);
+        intent.setData(imageUri);
+        startActivity(intent);
     }
 
+    @OnClick(R.id.btn_giveup) void giveUp(){
+        Glide.with(this).clear(picture);
+        changeVisibility(mLinerUp, mLinerDown);
+    }
+
+    private void changeVisibility(LinearLayout visible, LinearLayout invisible){
+        visible.setVisibility(View.VISIBLE);
+        invisible.setVisibility(View.INVISIBLE);
+    }
+
+//    public void getRecognizeResult() {
+//        if (pictureName.isEmpty() || pictureType.isEmpty()) {
+//            Toasty.error(getApplicationContext(), "请先上传图片！", Toast.LENGTH_SHORT, true).show();
+//            return;
+//        }
+//        OkGo.<String>post(Constant.URL + "/picture/uploadRecognitionPicture")
+//                .tag(this)
+//                .params("pictureName ", pictureName)
+//                .params("pictureType", pictureType)
+//                .isMultipart(true)
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onSuccess(Response<String> response) {
+////                        String res = response.body();
+////                        JSONObject jo_temp = JSONObject.parseObject(res);
+////                        String body = jo_temp.getString("body");
+////                        JSONObject jo = JSONObject.parseObject(body);
+////                        picture.setImageURL("http://121.48.163.57:18080/FaceRecognition/picture/PreviewPictureRecordFile?pictureName=33ede0227d21432cb8f61ee4949d2f2012701&pictureType=png");
+//                        String url = String.format("http://121.48.163.57:18080/FaceRecognition/picture/PreviewPictureRecordFile?pictureName=%s&pictureType=%s", pictureName, pictureType);
+//                        picture.setImageURL(url);
+//                        picture.invalidate();
+////                        textRecognize.setText("识别结果：张三");
+//                        pictureName = "";
+//                        pictureType = "";
+//
+//                        Toasty.success(getApplicationContext(), "识别成功！", Toast.LENGTH_SHORT, true).show();
+//                    }
+//
+//                    @Override
+//                    public void onError(Response<String> response) {
+//                        Toasty.error(getApplicationContext(), "识别出错", Toast.LENGTH_SHORT, true).show();
+//                    }
+//                });
+//    }
 
     //打开相册
     private void openAlbum() {
@@ -197,6 +232,7 @@ public class RecognizeActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -215,28 +251,10 @@ public class RecognizeActivity extends AppCompatActivity {
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
                     try {
-                        Bitmap bm = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        ExifInterface exifInterface = new ExifInterface(outputImagePath);
-                        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                        float degree = 0;
-                        switch (orientation) {
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                degree = 90;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                degree = 180;
-                                break;
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                degree = 270;
-                                break;
-                        }
-                        picture.setImageBitmap(bm);
-                        picture.setPivotX(picture.getWidth() / 2);
-                        picture.setPivotY(picture.getHeight() / 2);
-                        // 旋转
-                        picture.setRotation(degree);
-//                        String path = imageUri.getEncodedPath();
-
+                        RequestOptions options =  new RequestOptions().
+                                skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+                        Glide.with(this).asBitmap().load(imageUri).apply(options).into(picture);
+                        changeVisibility(mLinerDown, mLinerUp);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -267,7 +285,12 @@ public class RecognizeActivity extends AppCompatActivity {
     private void handleImageBeforeKitKat(Intent data) throws IOException {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
-        displayImage(imagePath);
+        RequestOptions options =  new RequestOptions().
+                skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+        Glide.with(this).asBitmap().load(imagePath).apply(options).into(picture);
+        if (imagePath != null){
+            changeVisibility(mLinerDown, mLinerUp);
+        }
     }
 
     private String getImagePath(Uri uri, String selection) {
@@ -281,36 +304,6 @@ public class RecognizeActivity extends AppCompatActivity {
             cursor.close();
         }
         return path;
-    }
-
-    private void displayImage(String imagePath) throws IOException {
-        if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            ExifInterface exifInterface = new ExifInterface(imagePath);
-            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            float degree = 0;
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    degree = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    degree = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    degree = 270;
-                    break;
-            }
-
-            System.out.println("高度：" + bitmap.getHeight());
-            System.out.println("宽度：" + bitmap.getWidth());
-            picture.setPivotX(picture.getWidth() / 2);
-            picture.setPivotY(picture.getHeight() / 2);
-            // 旋转90度
-            picture.setRotation(degree);
-            picture.setImageBitmap(bitmap);
-        } else {
-            Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
-        }
     }
 
     /**
@@ -344,6 +337,11 @@ public class RecognizeActivity extends AppCompatActivity {
             imagePath = uri.getPath();
         }
         outputImagePath = imagePath;
-        displayImage(imagePath);
+        RequestOptions options =  new RequestOptions().
+                skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE);
+        Glide.with(this).asBitmap().load(imagePath).apply(options).into(picture);
+        if (imagePath != null){
+            changeVisibility(mLinerDown, mLinerUp);
+        }
     }
 }

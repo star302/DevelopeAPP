@@ -2,41 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical">
-
+    <com.qmuiteam.qmui.widget.QMUITopBarLayout
+        android:id="@+id/home_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="top"
+        android:fitsSystemWindows="true"/>
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:paddingHorizontal="30dp">
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:paddingHorizontal="30dp">
 
-        <Button
-            android:id="@+id/btn_home_recognize"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@mipmap/face"
-            android:text="人脸考勤"
-            android:textColor="@color/white"
-            android:textSize="55sp"
-            android:textStyle="bold"></Button>
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_home_recognize"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/face"
+                android:text="人脸考勤"
+                android:textColor="@color/white"
+                android:textSize="55sp"
+                android:textStyle="bold"></Button>
+        </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:paddingHorizontal="30dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:paddingHorizontal="30dp">
 
-        <Button
-            android:id="@+id/btn_home_count"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@mipmap/steel"
-            android:text="钢筋计数"
-            android:textColor="@color/white"
-            android:textSize="55sp"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/btn_home_count"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@mipmap/steel"
+                android:text="钢筋计数"
+                android:textColor="@color/white"
+                android:textSize="55sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

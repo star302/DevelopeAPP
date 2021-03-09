@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="qmui_skin_support_topbar_bg">@color/tab_blue</item>
+        <item name="qmui_skin_support_topbar_title_color">@color/qmui_config_color_white</item>
         <item name="qmui_skin_support_topbar_image_tint_color">@color/yellow</item>
     </style>
 

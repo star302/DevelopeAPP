@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import com.chaychan.library.BottomBarLayout;
 import com.example.facerecongnition.R;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.view_homepage)

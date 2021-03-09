@@ -28,19 +28,23 @@ android {
 }
 
 dependencies {
+    //qmui
     def qmui_arch_version = '2.0.0-alpha10'
     implementation "com.qmuiteam:arch:$qmui_arch_version"
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
+    //BottomBaLayout
     implementation 'com.github.chaychan:BottomBarLayout:2.0.2'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'com.alibaba:fastjson:1.2.75'
     implementation 'commons-codec:commons-codec:1.11'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
     //BindView
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
